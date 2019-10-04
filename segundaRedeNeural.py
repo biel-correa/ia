@@ -42,11 +42,11 @@ from keras.optimizers import Adam
 from keras.metrics import categorical_crossentropy
 from keras.models import model_from_json
 
-jsonFile = open('remedio.json','r')
+jsonFile = open('redesTreinadas/remedio.json','r')
 modeloCarregadoJson = jsonFile.read()
 jsonFile.close()
 model = model_from_json(modeloCarregadoJson)
-model.load_weights('remedio.h5')
+model.load_weights('redesTreinadas/remedio.h5')
 print('\n carregado \n')
 
 chute = model.predict(
@@ -64,3 +64,4 @@ print(chute[0])
 print(chuteAproximado[0])
 
 #model.summary()
+#teste
