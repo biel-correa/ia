@@ -64,4 +64,3 @@ print(chute[0])
 print(chuteAproximado[0])
 
 #model.summary()
-#teste
