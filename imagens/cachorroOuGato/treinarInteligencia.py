@@ -19,7 +19,7 @@ localTreinar = 'imgs/treinar'
 localValidar = 'imgs/validar'
 localTestar = 'imgs/testar'
 
-batchesTreino = ImageDataGenerator().flow_from_directory(localTreinar,target_size=(224,224),classes=['cachorro','gato'],batch_size=10)
+batchesTreinar = ImageDataGenerator().flow_from_directory(localTreinar,target_size=(224,224),classes=['cachorro','gato'],batch_size=10)
 batchesTestar = ImageDataGenerator().flow_from_directory(localTestar,target_size=(224,224),classes=['cachorro','gato'],batch_size=10)
 batchesValidar = ImageDataGenerator().flow_from_directory(localValidar,target_size=(224,224),classes=['cachorro','gato'],batch_size=6)
 
@@ -37,6 +37,25 @@ def plots(ims, figsize=(12,6), rows=1, interp=False, titles=None):
             sp.set_title(titles[i], fontsize=16)
         plt.imshow(ims[i], interpolation=None if interp else 'none')
         
-imgs,labels = next(batchesTreino)
-
+imgs,labels = next(batchesTreinar)
 plots(imgs,titles=labels)
+
+model = Sequential()
+model.add(Conv2D(32,(3,3),activation='relu',input_shape=(224,224,3)))
+model.add(Flatten())
+model.add(Dense(2,activation='softmax'))
+
+model.compile(
+    Adam(lr=0.0001),
+    loss='categorical_crossentropy',
+    metrics=['accuracy']
+)
+
+model.fit_generator(
+        batchesTreinar,
+        steps_per_epoch = 4,
+        validation_data = batchesValidar,
+        validation_steps= 4,
+        epochs=400,
+        verbose = 2
+        )
