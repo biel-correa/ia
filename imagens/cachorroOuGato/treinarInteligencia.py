@@ -1,6 +1,6 @@
 import numpy as np
 import keras
-from keras import backend as k
+from keras import backend as K
 from keras.models import Sequential
 from keras.layers import Activation
 from keras.layers.core import Dense, Flatten
@@ -15,7 +15,7 @@ import itertools
 import matplotlib.pyplot as plt
 
 def plots(ims, figsize=(12,6), rows=1, interp=False, titles=None):
-    if type(ims[0]) is np.ndarray:
+    if type(ims[0]) == np.ndarray:
         ims = np.array(ims).astype(np.uint8)
         if (ims.shape[-1] != 3):
             ims = ims.transpose((0,2,3,1))
@@ -29,23 +29,23 @@ def plots(ims, figsize=(12,6), rows=1, interp=False, titles=None):
         plt.imshow(ims[i], interpolation=None if interp else 'none')
 
 
-localTreinar = 'imgs/treinar'
-localValidar = 'imgs/validar'
-localTestar = 'imgs/testar'
+localTreinar = '/home/gabriel/Documentos/github/imagens/cachorroOuGatoimgs/treinar'
+localValidar = '/home/gabriel/Documentos/github/imagens/cachorroOuGatoimgs/validar'
+localTestar = '/home/gabriel/Documentos/github/imagens/cachorroOuGatoimgs/testar'
 
-batchesTreinar = ImageDataGenerator().flow_from_directory(localTreinar,target_size=(224,224),classes=['cachorro','gato'],batch_size=10)
-batchesTestar = ImageDataGenerator().flow_from_directory(localTestar,target_size=(224,224),classes=['cachorro','gato'],batch_size=10)
-batchesValidar = ImageDataGenerator().flow_from_directory(localValidar,target_size=(224,224),classes=['cachorro','gato'],batch_size=6)
+batchesTreinar = ImageDataGenerator().flow_from_directory(localTreinar,target_size=(250,250),classes=['cachorro','gato'],batch_size=10)
+batchesTestar = ImageDataGenerator().flow_from_directory(localTestar,target_size=(250,250),classes=['cachorro','gato'],batch_size=10)
+batchesValidar = ImageDataGenerator().flow_from_directory(localValidar,target_size=(250,250),classes=['cachorro','gato'],batch_size=6)
 
+imgsTreinar = next(batchesTreinar)
+labelsTreinar = next(batchesTreinar)
+plots(imgsTreinar,titles=labelsTreinar)
 
-        
-imgs, labels = next(batchesTreinar)
-plots(imgs,titles=labels)
-
-model = Sequential()
-model.add(Conv2D(32,(3,3),activation='relu',input_shape=(224,224,3)))
-model.add(Flatten())
-model.add(Dense(2,activation='softmax'))
+model = Sequential([
+    Conv2D(32,(3,3),activation='relu',input_shape=(250,250,3)),
+    Flatten(),
+    Dense(2,activation='softmax')
+])
 
 model.compile(
     Adam(lr=0.0001),
@@ -62,7 +62,8 @@ model.fit_generator(
         verbose = 2
         )
 
-imgsTeste, labelsTeste = next(batchesTestar)
+imgsTeste = next(batchesTestar)
+labelsTeste = next(batchesTestar)
 plots(imgsTeste,titles=labelsTeste)
 
 labelsTeste = labelsTeste[:,0]
@@ -87,4 +88,5 @@ def plot_confusion_matrix(
 
 cmPlotLabels = ['gato','cachorro']
 plot_confusion_matrix(cm,cmPlotLabels,title='Confusion Matrix')
+
 # model.save('redesTreinadas/cachorroOuGato.h5')
