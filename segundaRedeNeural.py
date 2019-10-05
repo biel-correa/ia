@@ -76,7 +76,7 @@ def plot_confusion_matrix(
     classes,
     normalize=False,
     title="Confusion_Matrix",
-    cmap=plt.cm.Blues
+    cmap = plt.cm.Blues
     ):
     plt.imshow(cm,interpolation='nearest',cmap=cmap)
     plt.title(title)
@@ -100,6 +100,7 @@ def plot_confusion_matrix(
         horizontalalignment = 'center',
         color = 'white' if cm[i,j]>thresh else 'black'
         )
+
     plt.tight_layout()
     plt.ylabel('True Label')
     plt.xlabel('Predicted Label')

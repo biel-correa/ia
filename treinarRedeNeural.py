@@ -63,16 +63,17 @@ model.fit(
     trainLabels,
     validation_split=0.1,
     batch_size=10,
-    epochs=1000,
+    epochs=20,
     shuffle= True,
     verbose=2
 )
+
+model.save('redesTreinadas/teste.h5')
+
+# ou caso queira json
 
 modelJson = model.to_json()
 with open("remedio.json","w") as json_file:
     json_file.write(modelJson)
 model.save_weights("remedio.h5")
 print("salvo")
-
-
-#model.summary()
