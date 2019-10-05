@@ -63,4 +63,47 @@ chuteAproximado = model.predict_classes(
 print(chute[0])
 print(chuteAproximado[0])
 
-#model.summary()
+
+#criando grafico para analise
+from sklearn.metrics import confusion_matrix
+import itertools
+import matplotlib.pyplot as plt
+
+cm = confusion_matrix(trainLabels,chuteAproximado)
+
+def plot_confusion_matrix(
+    cm,
+    classes,
+    normalize=False,
+    title="Confusion_Matrix",
+    cmap=plt.cm.Blues
+    ):
+    plt.imshow(cm,interpolation='nearest',cmap=cmap)
+    plt.title(title)
+    plt.colorbar()
+    tickMarks= np.arange( len(classes)/2)
+    plt.xticks(tickMarks,classes,rotation=45)
+    plt.yticks(tickMarks,classes)
+    
+
+    if normalize:
+        cm = cm.astype('float')/cm.sum(axis=1)[:,np.newaxis]
+        print("Normalized Confusion Matrix")
+    else:
+        print("Confusion Matrix, without normalization")
+
+    # print(cm)
+
+    thresh = cm.max()/2
+    for i,j in itertools.product(range(cm.shape[0]),range(cm.shape[1])):
+        plt.text(j,i,cm[i,j],
+        horizontalalignment = 'center',
+        color = 'white' if cm[i,j]>thresh else 'black'
+        )
+    plt.tight_layout()
+    plt.ylabel('True Label')
+    plt.xlabel('Predicted Label')
+    plt.show()
+
+cmPlotLabels=['Sem efeitos','Com efeitos']
+plot_confusion_matrix(cm,cmPlotLabels,title='Confusion Matrix')
