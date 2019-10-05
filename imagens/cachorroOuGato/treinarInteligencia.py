@@ -14,15 +14,6 @@ from sklearn.metrics import confusion_matrix
 import itertools
 import matplotlib.pyplot as plt
 
-
-localTreinar = 'imgs/treinar'
-localValidar = 'imgs/validar'
-localTestar = 'imgs/testar'
-
-batchesTreinar = ImageDataGenerator().flow_from_directory(localTreinar,target_size=(224,224),classes=['cachorro','gato'],batch_size=10)
-batchesTestar = ImageDataGenerator().flow_from_directory(localTestar,target_size=(224,224),classes=['cachorro','gato'],batch_size=10)
-batchesValidar = ImageDataGenerator().flow_from_directory(localValidar,target_size=(224,224),classes=['cachorro','gato'],batch_size=6)
-
 def plots(ims, figsize=(12,6), rows=1, interp=False, titles=None):
     if type(ims[0]) is np.ndarray:
         ims = np.array(ims).astype(np.uint8)
@@ -36,8 +27,19 @@ def plots(ims, figsize=(12,6), rows=1, interp=False, titles=None):
         if titles is not None:
             sp.set_title(titles[i], fontsize=16)
         plt.imshow(ims[i], interpolation=None if interp else 'none')
+
+
+localTreinar = 'imgs/treinar'
+localValidar = 'imgs/validar'
+localTestar = 'imgs/testar'
+
+batchesTreinar = ImageDataGenerator().flow_from_directory(localTreinar,target_size=(224,224),classes=['cachorro','gato'],batch_size=10)
+batchesTestar = ImageDataGenerator().flow_from_directory(localTestar,target_size=(224,224),classes=['cachorro','gato'],batch_size=10)
+batchesValidar = ImageDataGenerator().flow_from_directory(localValidar,target_size=(224,224),classes=['cachorro','gato'],batch_size=6)
+
+
         
-imgs,labels = next(batchesTreinar)
+imgs, labels = next(batchesTreinar)
 plots(imgs,titles=labels)
 
 model = Sequential()
@@ -59,3 +61,5 @@ model.fit_generator(
         epochs=400,
         verbose = 2
         )
+
+model.save('redesTreinadas/teste.h5')
