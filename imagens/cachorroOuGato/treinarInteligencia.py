@@ -58,8 +58,33 @@ model.fit_generator(
         steps_per_epoch = 4,
         validation_data = batchesValidar,
         validation_steps= 4,
-        epochs=400,
+        epochs=4,
         verbose = 2
         )
 
-model.save('redesTreinadas/teste.h5')
+imgsTeste, labelsTeste = next(batchesTestar)
+plots(imgsTeste,titles=labelsTeste)
+
+labelsTeste = labelsTeste[:,0]
+
+previsao = model.predict_generator(batchesTestar,steps=1,verbose=1)
+cm = confusion_matrix(labelsTeste,previsao[:,0])
+
+def plot_confusion_matrix(
+    cm,
+    classes,
+    normalize=False,
+    title="Confusion_Matrix",
+    cmap = plt.cm.Blues
+    ):
+
+    plt.imshow(cm,interpolation='nearest',cmap=cmap)
+    plt.title(title)
+    plt.colorbar()
+    tickMarks= np.arange( len(classes)/2)
+    plt.xticks(tickMarks,classes,rotation=45)
+    plt.yticks(tickMarks,classes)
+
+cmPlotLabels = ['gato','cachorro']
+plot_confusion_matrix(cm,cmPlotLabels,title='Confusion Matrix')
+# model.save('redesTreinadas/cachorroOuGato.h5')
