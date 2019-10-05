@@ -40,4 +40,4 @@ def plots(ims, figsize=(12,6), rows=1, interp=False, titles=None):
 imgs,labels = next(batchesTreino)
 
 plots(imgs,titles=labels)
-a
+teste sua mae e corna
