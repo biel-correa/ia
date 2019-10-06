@@ -12,7 +12,7 @@ localTreinar = '/home/gabriel/Documentos/github/imagens/cachorroOuGato/imgs/trei
 localValidar = '/home/gabriel/Documentos/github/imagens/cachorroOuGato/imgs/validar'
 
 quantidadeTreino = 3997
-quantidadeValidar = 6
+quantidadeValidar = 997
 epochs = 400
 batch_size = 10
 
@@ -49,3 +49,47 @@ model.add(Conv2D(32,(3,3),input_shape=input_shape,activation='relu'))
 model.add(MaxPooling2D(pool_size=(2,2)))
 
 model.summary()
+
+model.add(Conv2D(32,(3,3),input_shape=input_shape,activation='relu'))
+model.add(MaxPooling2D(pool_size=(2,2)))
+
+model.add(Conv2D(32,(3,3),input_shape=input_shape,activation='relu'))
+model.add(MaxPooling2D(pool_size=(2,2)))
+
+model.add(Flatten())
+model.add(Dense(64,activation='relu'))
+model.add(Dropout(0.5))
+model.add(Dense(1,activation='sigmoid'))
+
+model.summary()
+
+model.compile(
+    loss='binary_crossentropy',
+    optimizer='rmsprop',
+    metrics=['accuracy']
+)
+
+model.fit_generator(
+    treinarGerador,
+    steps_per_epoch=quantidadeTreino//batch_size,
+    epochs=epochs,
+    validation_data=validarGerador,
+    validation_steps=quantidadeValidar//batch_size
+)
+
+model.save('redesTreinadas/CachorroOuGato.h5')
+
+imgPred = image.load_img(
+    '/home/gabriel/Documentos/github/imagens/cachorroOuGato/imgs/testar/cachorro/dog.3998.jpg',
+    target_size=(150,150)
+)
+
+imgPred = image.img_to_array(imgPred)
+imgPred = np.expand_dims(imgPred,axis = 0)
+
+resultado = model.predict(imgPred)
+print(resultado)
+if resultado[0][0] == 1:
+    previsao  = 'cachorro'
+else:
+    previsao = 'gato'
