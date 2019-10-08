@@ -22,13 +22,13 @@ df = pd.DataFrame(data,columns=['data1','data2','data3','data4',])
 
 # _=df.plot(kind='scatter', x='data1',y='data2',xlim=(-1.5,1.5),ylim=(0,3))
 
-df.plot(
-    kind='hist',
-    bins=50,
-    title='Histogram',
-    alpha = 0.6,
-    figsize=(5,5)
-)
+# df.plot(
+#     kind='hist',
+#     bins=50,
+#     title='Histogram',
+#     alpha = 0.6,
+#     figsize=(5,5)
+# )
 
 # df.plot(
 #     kind='hist',
@@ -40,10 +40,10 @@ df.plot(
 #     figsize=(6,4)
 # )
 
-# df.plot(
-#     kind='box',
-#     title='Boxplot'
-# )
+df.plot(
+    kind='box',
+    title='Boxplot'
+)
 
 # fig,ax=plt.subplots(2,2,figsize=(12,9))
 
